@@ -160,6 +160,66 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/HM-GM-AM-QM-inequalities/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/cat.png">
+      <meta itemprop="name" content="StoodCoronet">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Robye の Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/18/HM-GM-AM-QM-inequalities/" class="post-title-link" itemprop="url">关于均值不等式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-18 17:11:20 / Modified: 18:39:21" itemprop="dateCreated datePublished" datetime="2022-02-18T17:11:20+08:00">2022-02-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>设$$ f(x) $$在(-$\infty$,+$\infty$)上有二阶连续导数，证明：$f^{‘’}(x)\ge0$的重要条件是对于任意实数a,b,有$f\bigl(\frac{a+b}{2}\bigr)\le\frac{1}{b-a}\int_a^bf(x)dx$</p>
+<p>根据泰勒公式得：<br>$$<br>f(x) &#x3D; f(\frac{a+b}{2})+f’(\frac{a+b}{2})(x-\frac{a+b}{2})+\frac{1}{2}f’’(\xi)(x-\frac{a+b}{2})^2<br>$$<br>由于$f’’(\xi)&gt;0$，所以：<br>$$f(x)\ge f(\frac{a+b}{2})+f’(\frac{a+b}{2})(x-\frac{a+b}{2})$$<br>两边取积分得：<br>$$<br>\begin{align*}<br>    \int_{a}^{b}f(x)dx &amp;\ge \int_{a}^{b}f(\frac{a+b}{2})dx+\int_{a}^{b}f’(\frac{a+b}{2})(x-\frac{a+b}{2})dx\\<br>    &amp;&#x3D;(b-a)f(\frac{a+b}{2})+f’(\frac{a+b}{2})\int_{a}^{b}(x-\frac{a+b}{2})dx\\<br>    &amp;&#x3D;(b-a)f(\frac{a+b}{2})<br>\end{align*}<br>$$<br>所以<br>[f(\frac{a+b}{2})\le\frac{1}{b-a}\int_{a}^{b}f(x)dx]</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/nes-emulator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -487,7 +547,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -604,6 +664,61 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
