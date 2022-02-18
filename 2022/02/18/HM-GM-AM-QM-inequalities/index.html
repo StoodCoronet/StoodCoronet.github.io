@@ -203,19 +203,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>22年数学一的一道大题，在网课班里做到过印象深刻。在这边记一下，主要也试试在hexo上贴$\LaTeX$的效果<br><span id="more"></span></p>
+        <p>22年数学一的一道大题，在网课班里做到过印象深刻。在这边记一下，主要也试试在hexo上贴$\LaTeX$的效果</p>
+<span id="more"></span>
+
 <h2 id="下面是原题和过程"><a href="#下面是原题和过程" class="headerlink" title="下面是原题和过程"></a>下面是原题和过程</h2><p>设$f(x)$在(-$\infty$,+$\infty$)上有二阶连续导数，证明：$f’’(x)\ge0$的重要条件是对于任意实数a,b,有$f\bigl(\frac{a+b}{2}\bigr)\le\frac{1}{b-a}\int_a^bf(x)dx$</p>
-<p>根据泰勒公式得：</p>
-<script type="math/tex; mode=display">
-f(x) = f(\frac{a+b}{2})+f'(\frac{a+b}{2})(x-\frac{a+b}{2})+\frac{1}{2}f''(\xi)(x-\frac{a+b}{2})^2</script><p>由于$f’’(\xi)&gt;0$，所以：</p>
-<script type="math/tex; mode=display">f(x)\ge f(\frac{a+b}{2})+f'(\frac{a+b}{2})(x-\frac{a+b}{2})</script><p>两边取积分得：</p>
-<script type="math/tex; mode=display">
-\begin{align*}
-    \int_{a}^{b}f(x)dx &\ge \int_{a}^{b}f(\frac{a+b}{2})dx+\int_{a}^{b}f'(\frac{a+b}{2})(x-\frac{a+b}{2})dx\\\\
-    &=(b-a)f(\frac{a+b}{2})+f'(\frac{a+b}{2})\int_{a}^{b}(x-\frac{a+b}{2})dx\\\\
-    &=(b-a)f(\frac{a+b}{2})
-\end{align*}</script><p>所以</p>
-<script type="math/tex; mode=display">f(\frac{a+b}{2})\le\frac{1}{b-a}\int_{a}^{b}f(x)dx</script>
+<p>根据泰勒公式得：<br>$$<br>f(x) &#x3D; f(\frac{a+b}{2})+f’(\frac{a+b}{2})(x-\frac{a+b}{2})+\frac{1}{2}f’’(\xi)(x-\frac{a+b}{2})^2<br>$$<br>由于$f’’(\xi)&gt;0$，所以：<br>$$f(x)\ge f(\frac{a+b}{2})+f’(\frac{a+b}{2})(x-\frac{a+b}{2})$$<br>两边取积分得：<br>$$<br>\begin{align*}<br>    \int_{a}^{b}f(x)dx &amp;\ge \int_{a}^{b}f(\frac{a+b}{2})dx+\int_{a}^{b}f’(\frac{a+b}{2})(x-\frac{a+b}{2})dx\\<br>    &amp;&#x3D;(b-a)f(\frac{a+b}{2})+f’(\frac{a+b}{2})\int_{a}^{b}(x-\frac{a+b}{2})dx\\<br>    &amp;&#x3D;(b-a)f(\frac{a+b}{2})<br>\end{align*}<br>$$<br>所以<br>$$f(\frac{a+b}{2})\le\frac{1}{b-a}\int_{a}^{b}f(x)dx$$</p>
+
     </div>
 
     
