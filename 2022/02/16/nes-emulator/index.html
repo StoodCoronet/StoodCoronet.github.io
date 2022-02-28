@@ -27,10 +27,13 @@
 <meta property="og:site_name" content="Robye の Blog">
 <meta property="og:description" content="Introduction这个项目将会复现OneLoneCoder的nes模拟器，理清nes的工作原理，也算是丰富一下nes的中文社区">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/02/16/nes-emulator/architecture.png">
+<meta property="og:image" content="http://example.com/2022/02/16/nes-emulator/iNesfileon010editor.png">
 <meta property="article:published_time" content="2022-02-16T09:30:26.000Z">
-<meta property="article:modified_time" content="2022-02-16T10:09:02.444Z">
+<meta property="article:modified_time" content="2022-02-28T15:05:36.393Z">
 <meta property="article:author" content="StoodCoronet">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/02/16/nes-emulator/architecture.png">
 
 <link rel="canonical" href="http://example.com/2022/02/16/nes-emulator/">
 
@@ -187,10 +190,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-16 17:30:26 / Modified: 18:09:02" itemprop="dateCreated datePublished" datetime="2022-02-16T17:30:26+08:00">2022-02-16</time>
+              <time title="Created: 2022-02-16 17:30:26" itemprop="dateCreated datePublished" datetime="2022-02-16T17:30:26+08:00">2022-02-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-28 23:05:36" itemprop="dateModified" datetime="2022-02-28T23:05:36+08:00">2022-02-28</time>
+              </span>
 
           
 
@@ -218,7 +227,26 @@
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/a/2602885">https://stackoverflow.com/a/2602885</a></p>
 </li>
 </ul>
-<h1 id="正片（未完）"><a href="#正片（未完）" class="headerlink" title="正片（未完）"></a>正片（未完）</h1><p>项目还在做，先放个notion链接上来，欢迎围观（狗头<br><a target="_blank" rel="noopener" href="https://mirror-birth-326.notion.site/nes-bf79dbf82a2549e0a004ed91ac47b520">https://mirror-birth-326.notion.site/nes-bf79dbf82a2549e0a004ed91ac47b520</a></p>
+<h1 id="正片（未完）"><a href="#正片（未完）" class="headerlink" title="正片（未完）"></a>正片（未完）</h1><p>先上线一部分架构分析</p>
+<img src="/2022/02/16/nes-emulator/architecture.png" class="">
+<p>架构分析<br>1．CPU6502：</p>
+<ol>
+<li>主要通过一个CPU BUS与其他设备相连，上面的设备是否相应取决于CPU在BUS上寻址的输出值。</li>
+<li>有5个名为a, x, y, stkp(stack pointer), status的8位寄存器，其中stkp其实是一个16位寄存器，只是搞8位固定为“0000 0001”。</li>
+<li>有一个16位pc(Program Counter)寄存器用于范围$0000~$FFFF的寻址工作。</li>
+<li>有12中寻址模式以及56种合法指令实现对寄存器，内存，或其他设备的读写操作。<br>2．MEMORY<br>一块可读可写的区域，响应范围$0000~$07FF</li>
+</ol>
+<ol start="4">
+<li>APU, etc.<br>其实包含APU(Audio Process Unit，声音处理单元), controller(手柄控制器)，DMA(Direct Memory Access)的策略<br>1）    APU：当CPU向BUS上$4000-$4013, $4015, $4017这些范围尝试写入数据时响应apu相关的写入操作，当CPU尝试读取BUS上$4015时候返回APU状态数据<br>2）    Controller，手柄控制器：对CPU尝试写入$4016，以及CPU尝试读取$4016-$4017范围做出相应。<br>3）    DMA(Direct Memory Access)策略，由于CPU与PPU(Pixel Process Unit, 图形处理单元)仅有$2000~$2007这个范围，显然不能满足要求。因此NES在特定情况下允许PPU直接访问CPU的部分内存，直接将这部分内存拷贝至OAM(ObjectAttributeEntry)。在CPU对BUS上的$4014范围尝试写入是触发。</li>
+<li>CATRTIDGE，卡带<br>卡带包括PRG以及CHR这两部分ROM用于存放游戏信息以及一个MAPPER映射策略，在使用010editor读取iNes文件时(这里以《超级马里奥兄弟》为例)能看到Program ROM(32k)以及Character ROM(8k)的相关信息。<img src="/2022/02/16/nes-emulator/iNesfileon010editor.png" class="">
+图2 iNes头文件分析<br>而我们知道NES是一个有非常长生命周期的产品，当游戏程序以及图片信息变得越来越大，并且超出了CPU可寻址范围时，则通过MAPPER来扩大CPU的寻址范围，以支持更加庞大的游戏。<br>一般对于比较大的游戏，游戏的PRG和CHR会被开发者分成不同的Banks(可以理解为区域，Bank0, Bank1, Bank2 …)<br>对于一些复杂的MAPPER，可能会支持一些寄存器来储存当前被选择的Bank，由于通常来说，CHR和PRG都是不可读的ROM，因此当CPU对CARTRIDGE范围进行读取操作时，可以修改MAPPER的配置方式。</li>
+<li>PPU(Pixel Process Unit)：PPU也有条专属于它的PPU BUS, 连接GRAPHICS(其实是来自CARTRIDGE的CHR)，VRAM，PALETTE。<br>其中CPU通过$2000-$2007以及$4014(这是已在上文提及的DMA策略)。实际上可以把$2000-$2007看作8个寄存器，按照地址顺序分别为CTRL, MASK, STATUS, OAM ADDR, OAM DATA, SCROLL, ADDR, DATA。</li>
+<li>VRAM(2k), 也称作NAME TABLE, 用于存储当前显示的背景，配合一个滚动栏，生成一个256 * 240分辨率的画面，也由于NTSC系统限制，不能显示顶部以及底部8跳扫描线，因此剩下256 * 224的分辨率。</li>
+<li>OAM，用于存放sprites，即组成游戏中人物的部分，负责碰撞判定。比如我们在《超级马里奥兄弟》中看到的马里奥以及敌人等就是这部分负责生成的。</li>
+<li>PALETTE，“调色盘”，用于存放一系列颜色组合，对PPU尝试往PPU BUS读取$3F000~$3FFF范围时响应。由于NES显示画面的方式不是类似直接输出一张带颜色的jpg图片，而是结合NAME TABLE和OAM生成对应颜色的画面。也就是说NAME TABLE和OAM中不带颜色信息，而是PALETTE的相关信息。</li>
+<li>CLOCK，用于控制CPU和PPU的运行周期，其中PPU的运行速度是CPU的三倍</li>
+</ol>
+<p>项目还在做，先放个notion链接上来，欢迎围观（狗头<br><a target="_blank" rel="noopener" href="https://mirror-birth-326.notion.site/nes-bf79dbf82a2549e0a004ed91ac47b520">https://mirror-birth-326.notion.site/nes-bf79dbf82a2549e0a004ed91ac47b520</a></p>
 
     </div>
 
